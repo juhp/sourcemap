@@ -1,5 +1,5 @@
 name:                sourcemap
-version:             0.1.6
+version:             0.1.6.1
 synopsis:            Implementation of source maps as proposed by Google and Mozilla.
 description:         Implementation of source maps, revision 3, proposed by Google and Mozilla here
                      <https://wiki.mozilla.org/DevTools/Features/SourceMap> and here
@@ -8,8 +8,8 @@ license:             BSD3
 license-file:        LICENSE
 author:              Chris Done
 stability:           alpha
-maintainer:          chrisdone@gmail.com
-bug-reports:         https://github.com/chrisdone/sourcemap/issues
+maintainer:          Jens Petersen <juhpetersen@gmail.com>
+bug-reports:         https://github.com/juhp/sourcemap/issues
 copyright:           2012 Chris Done
 category:            Development
 build-type:          Simple
@@ -17,7 +17,7 @@ cabal-version:       >=1.10
 
 source-repository head
     type:     git
-    location: https://github.com/chrisdone/sourcemap.git
+    location: https://github.com/juhp/sourcemap.git
 
 library
   default-language:    Haskell2010
