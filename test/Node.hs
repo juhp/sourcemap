@@ -16,7 +16,7 @@ import qualified Data.ByteString.Lazy.Char8 as Bytes
 import qualified Data.ByteString.Lazy.UTF8 as Bytes
 import           Data.List
 import           System.Exit
-import           System.Process.Extra
+import           System.Process
 
 -- | Run the test suite.
 main :: IO ()
@@ -41,10 +41,10 @@ compareImplementations m = do
 -- | Generate a source map using the nodejs source-map package.
 generateNode :: SourceMapping -> IO Value
 generateNode SourceMapping{..} = do
-  result <- readAllFromProcess' "node" [] source
-  case result of
-    Left err -> error err
-    Right (_err,out) ->
+  (ret, out, err) <- readProcessWithExitCode "node" [] source
+  if ret /= ExitSuccess
+    then error err
+    else
       case decode (Bytes.fromString (concat (lines out))) of
          Just value -> return value
          Nothing    -> error "unable to parse node's json output"

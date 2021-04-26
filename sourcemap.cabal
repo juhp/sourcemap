@@ -39,6 +39,7 @@ test-suite nodejs
     default-language: Haskell2010
     type:       exitcode-stdio-1.0
     main-is:    Node.hs
+    other-modules: SourceMap, SourceMap.Types, VLQ
     hs-source-dirs: src test
     build-depends: base,
                    sourcemap,
@@ -54,6 +55,7 @@ benchmark vlq
   type:             exitcode-stdio-1.0
   hs-source-dirs:   src bench
   main-is:          Bench/VLQ.hs
+  other-modules:       VLQ
   build-depends:    base,
                     criterion,
                     bytestring,
