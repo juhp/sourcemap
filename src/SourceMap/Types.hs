@@ -1,4 +1,3 @@
-{-# OPTIONS -Wall #-}
 
 -- | Types for the source maps.
 

@@ -3,8 +3,6 @@
 -- https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
 --
 
-{-# OPTIONS -Wall #-}
-
 module VLQ
   (encode
   ,decode)

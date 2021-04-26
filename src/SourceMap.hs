@@ -1,6 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# OPTIONS -Wall #-}
 
 -- | Generate JSON from a source mapping.
 
