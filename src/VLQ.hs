@@ -13,6 +13,7 @@ import           Data.ByteString.Lazy (ByteString)
 import qualified Data.ByteString.Lazy as B
 import           Data.Int
 import           Data.List
+import           Data.Maybe
 import           Data.Word
 import           Prelude hiding ((>>))
 
@@ -96,15 +97,13 @@ base64Chars = map (fromIntegral.fromEnum) "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk
 
 -- | Encode the given number to a base 64 character.
 encodeBase64 :: Word8 -> Word8
-encodeBase64 i = maybe (error "Base 64 char must be between 0 and 63.")
-                       id
-                       (lookup i (zip [0..] base64Chars))
+encodeBase64 i = fromMaybe (error "Base 64 char must be between 0 and 63.")
+                 (lookup i (zip [0..] base64Chars))
 
 -- | Encode the given base 64 character to a number.
 decodeBase64 :: Word8 -> Word8
-decodeBase64 i = maybe (error "Not a valid base 65 digit.")
-                       id
-                        (lookup i (zip base64Chars [0..]))
+decodeBase64 i = fromMaybe (error "Not a valid base 65 digit.")
+                 (lookup i (zip base64Chars [0..]))
 
 -- | Makes the code more familiar to read. Shift-left.
 (<<) :: Int32 -> Int -> Int32

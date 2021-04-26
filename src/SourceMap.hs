@@ -1,12 +1,13 @@
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
 
 -- | Generate JSON from a source mapping.
 
 module SourceMap (generate) where
 
 import           SourceMap.Types
-import qualified VLQ as VLQ
+import qualified VLQ
 
 import           Control.Monad hiding (forM_)
 import           Control.Monad.ST
@@ -17,7 +18,9 @@ import           Data.ByteString.Lazy.UTF8 (fromString)
 import           Data.ByteString.Builder (Builder(), lazyByteString, toLazyByteString)
 import           Data.Foldable (forM_)
 import qualified Data.HashMap.Lazy as Map
-import           Data.Monoid
+#if !MIN_VERSION_base(4,11,0)
+import Data.Monoid ((<>))
+#endif
 import           Data.List
 import           Data.Maybe
 import           Data.Ord
@@ -61,7 +64,7 @@ encodeMappings sources names = go . sortBy (comparing mapGenerated) where
                                              (fromIntegral (fromEnum ';'))
                    return (posLine mapGenerated)
            else do when (i > 0)
-                        (result += (fromString ","))
+                        (result += fromString ",")
                    return previousGeneratedLine
       -- Original generated column (also offsetted from previous entries).
       updating prevGenCol $ \previousGeneratedColumn -> do
@@ -89,9 +92,9 @@ encodeMappings sources names = go . sortBy (comparing mapGenerated) where
              result += VLQ.encode (indexOf name names - previousName)
              return (indexOf name names)
     -- Return the byte buffer.
-    fmap toLazyByteString $ readSTRef result
+    toLazyByteString <$> readSTRef result
 
-  updating r f = readSTRef r >>= \x -> f x >>= writeSTRef r
+  updating r f = readSTRef r >>= (f >=> writeSTRef r)
   r += y = modifySTRef r (<> lazyByteString y)
   x .= y = writeSTRef x y; infixr 1 .=
   indexOf e xs = fromIntegral (fromMaybe 0 (elemIndex e xs))

@@ -13,8 +13,8 @@ main :: IO ()
 main = do
   defaultMain [benchmark]
   where benchmark = bgroup "numbers"
-                           (map (\n -> bench (show n) (whnf encode n))
-                                (map (fromIntegral :: Int -> Int32)
-                                     (take 5
-                                           (randomRs (1000000000,2000000000)
-                                                     (mkStdGen 1)))))
+                           (map ((\n -> bench (show n) (whnf encode n)) .
+                                 (fromIntegral :: Int -> Int32))
+                             (take 5
+                               (randomRs (1000000000,2000000000)
+                                 (mkStdGen 1))))

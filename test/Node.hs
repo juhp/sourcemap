@@ -34,7 +34,7 @@ compareImplementations m = do
   let !h = generate m
   if h == n
      then exitSuccess
-     else do putStr $ "Node:    "; Bytes.putStrLn $ encode n
+     else do putStr "Node:    "; Bytes.putStrLn $ encode n
              putStr "Haskell: "; Bytes.putStrLn $ encode h
              exitFailure
 

@@ -1,10 +1,13 @@
+{-# LANGUAGE CPP #-}
 
 -- | Types for the source maps.
 
 module SourceMap.Types where
 
 import Data.Int
-import Data.Monoid
+#if !MIN_VERSION_base(4,11,0)
+import Data.Monoid ((<>))
+#endif
 import Data.Text
 import Data.Function
 
