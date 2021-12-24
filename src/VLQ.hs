@@ -102,8 +102,8 @@ encodeBase64 i = fromMaybe (error "Base 64 char must be between 0 and 63.")
 
 -- | Encode the given base 64 character to a number.
 decodeBase64 :: Word8 -> Word8
-decodeBase64 i = fromMaybe (error "Not a valid base 65 digit.")
-                 (lookup i (zip base64Chars [0..]))
+decodeBase64 i = maybe (error "Not a valid base 65 digit.") toEnum
+                 (elemIndex i base64Chars)
 
 -- | Makes the code more familiar to read. Shift-left.
 (<<) :: Int32 -> Int -> Int32

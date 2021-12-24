@@ -27,7 +27,6 @@ import Data.Monoid ((<>))
 #endif
 import           Data.List
 import           Data.Maybe
-import           Data.Ord
 import           Data.STRef
 import           Data.Text (Text)
 import           Data.Text.Lazy.Encoding (decodeUtf8)
@@ -47,7 +46,7 @@ generate SourceMapping{..} = Object (Map.fromList obj) where
 
 -- | Encode the mappings to the source map format.
 encodeMappings :: [FilePath] -> [Text] -> [Mapping] -> ByteString
-encodeMappings sources names = go . sortBy (comparing mapGenerated) where
+encodeMappings sources names = go . sortOn mapGenerated where
   go mappings = runST $ do
     -- State.
     prevGenCol   <- newSTRef 0
