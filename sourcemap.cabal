@@ -13,7 +13,8 @@ bug-reports:         https://github.com/juhp/sourcemap/issues
 copyright:           2012 Chris Done
 category:            Development
 build-type:          Simple
-cabal-version:       >=1.10
+cabal-version:       1.18
+extra-doc-files:     ChangeLog.md
 
 source-repository head
     type:     git
