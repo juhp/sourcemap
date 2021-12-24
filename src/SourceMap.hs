@@ -12,12 +12,16 @@ import qualified VLQ
 import           Control.Monad hiding (forM_)
 import           Control.Monad.ST
 import           Data.Aeson hiding ((.=))
+#if MIN_VERSION_aeson(2,0,0)
+import qualified Data.Aeson.KeyMap as Map
+#else
+import qualified Data.HashMap.Lazy as Map
+#endif
 import           Data.ByteString.Lazy (ByteString)
-import qualified Data.ByteString.Lazy as Bytes
-import           Data.ByteString.Lazy.UTF8 (fromString)
+import qualified Data.ByteString.Lazy as B
+import qualified Data.ByteString.Lazy.UTF8 as U
 import           Data.ByteString.Builder (Builder(), lazyByteString, toLazyByteString)
 import           Data.Foldable (forM_)
-import qualified Data.HashMap.Lazy as Map
 #if !MIN_VERSION_base(4,11,0)
 import Data.Monoid ((<>))
 #endif
@@ -60,11 +64,11 @@ encodeMappings sources names = go . sortBy (comparing mapGenerated) where
       updating prevGenLine $ \previousGeneratedLine ->
         if posLine mapGenerated /= previousGeneratedLine
            then do prevGenCol .= 0
-                   result += Bytes.replicate (fromIntegral (posLine mapGenerated - previousGeneratedLine))
+                   result += B.replicate (fromIntegral (posLine mapGenerated - previousGeneratedLine))
                                              (fromIntegral (fromEnum ';'))
                    return (posLine mapGenerated)
            else do when (i > 0)
-                        (result += fromString ",")
+                        (result += U.fromString ",")
                    return previousGeneratedLine
       -- Original generated column (also offsetted from previous entries).
       updating prevGenCol $ \previousGeneratedColumn -> do
