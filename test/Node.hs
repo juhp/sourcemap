@@ -53,8 +53,8 @@ generateNode SourceMapping{..} = do
           ["var s = require('source-map');"
           ,""
           ,"var generator = new s.SourceMapGenerator({"] ++
-          [intercalate "," (["file: " ++ show smFile] ++
-                           ["sourceRoot: " ++ show root | Just root <- [smSourceRoot]])] ++
+          [intercalate "," (("file: " ++ show smFile) :
+                             ["sourceRoot: " ++ show root | Just root <- [smSourceRoot]])] ++
           ["});"
           ,""] ++
           map addMapping smMappings ++
